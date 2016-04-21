@@ -1,10 +1,10 @@
 import sys
 import csv
 import requests
-import bar
+import keySafe
 
 api = "https://maps.googleapis.com/maps/api/geocode/json?"
-key = bar.key
+key = keySafe.key
 #address = "345 chambers st"
 bounds = "40.491564,-74.260851|40.916375,-73.677794"
 #fields = ["datestop","arstmade","frisked","searched","addrnum","stname","stinter","crossst","city"]
