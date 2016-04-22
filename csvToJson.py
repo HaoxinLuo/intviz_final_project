@@ -3,14 +3,14 @@ import json
 import sys
 import re
 
-#borough > zip > address1 = [{lat1,lng1},{rowx},{rowx+1},...}]
+#borough > zip > address1 = {latlng:[lat1,lng1],data:[{rowx},{rowx+1},...}]}
 def parseCsv(fin):
     try:
         csvIn = csv.DictReader(fin);
     except:
         print 'Error: could not open csv reader on input file'
         sys.exit(1)
-    wantedFields = ["datestop","arstmade","frisked","searched","city",\
+    wantedFields = ["datestop","arstmade","frisked","searched",\
                     "lat2","lng2",'full_addr2','race','age']
     data = {'BROOKLYN':{},'QUEENS':{},'STATEN IS':{},'MANHATTAN':{},'BRONX':{}}
     for unmodRow in csvIn:
@@ -18,14 +18,14 @@ def parseCsv(fin):
         addr = unmodRow['full_addr1']
         lat = unmodRow['lat1']
         lng = unmodRow['lng1']
-        borough = row['city']
+        borough = unmodRow['city']
         zipcode = extractZip(addr) #00000 if failed to get zip
 
         if zipcode not in data[borough]:
             data[borough][zipcode] = {}
         if addr not in data[borough][zipcode]:
-            data[borough][zipcode][addr] = [{'lat1':lat,'lng1':lng}]
-        data[borough][zipcode][addr].append(row)
+            data[borough][zipcode][addr] = {'latlng':[lat,lng],'data':[]}
+        data[borough][zipcode][addr]['data'].append(row)
     return data
 
 def extractZip(addr):
