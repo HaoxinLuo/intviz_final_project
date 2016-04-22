@@ -25,13 +25,15 @@
     id: 'mapbox.streets'
     }).addTo(mymap);
     
-    
-    L.circle([40.72, -73.90], 500, {
-    color: 'red',
-    fillColor: '#f03',
-    fillOpacity: 0.5
-    }).addTo(mymap).bindPopup("I am a circle.");
-    
+    for (i = 0, len = 3; i < len; i++){
+      x_cor = 40.72 + i*.01;
+      y_cor = -73.90 - i*.01;
+      L.circle([x_cor, y_cor], 250, {
+      color: 'red',
+      fillColor: '#f03',
+      fillOpacity: 0.5
+      }).addTo(mymap).bindPopup("I am a circle.");
+    }
     var popup = L.popup();
     
     function onMapClick(e) {
