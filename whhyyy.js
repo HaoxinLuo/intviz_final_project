@@ -40,24 +40,46 @@ function getColor(lst){
     return races[max];
 }
 
+function getBlurb(lst){
+    nums = {'A':0,'B':0,'I':0,'P':0,
+	     'Q':0,'W':0,'X':0,'Z':0};
+    for (var person in lst){
+	nums[lst[person].race] += 1;
+    }
+    retVal = '';
+    for (var key in nums){
+	if (nums[key] > 0){
+	    retVal += key + ':' + nums[key] + '\n';
+	}
+    }
+    return retVal;
+}
+
 function drawAllCircles(response){
     data = JSON.parse(response);
+    points = []
     for(var borough in data){
     	for(var zipcode in data[borough]){
     	    for(var incident in data[borough][zipcode]){
     		place = data[borough][zipcode][incident]
-		x_cor = parseFloat(place.latlng[0]);
-		y_cor = parseFloat(place.latlng[1]);
-		elements = place.data.length;
-		color = getColor(place.data);
-		L.circle([x_cor, y_cor], elements * 20, {
-		    color: color,
-		    fillColor: color,
-		    fillOpacity: 0.20
-		}).addTo(mymap).bindPopup(elements + " many stops");
+    		x_cor = parseFloat(place.latlng[0]);
+    		y_cor = parseFloat(place.latlng[1]);
+    		elements = place.data.length;
+    		color = getColor(place.data);
+    		points.push(L.circle([x_cor, y_cor], elements * 20, {
+    		    color: color,
+    		    fillColor: color,
+    		    fillOpacity: 0.20
+    		}).bindPopup(getBlurb(place.data)));
 
     	    }
     	}
+    }
+    points.sort(function(a,b){
+	return b._mRadius - a._mRadius;
+    });
+    for(var point in points){
+	points[point].addTo(mymap);
     }
 }
 loadJSON(drawAllCircles);
