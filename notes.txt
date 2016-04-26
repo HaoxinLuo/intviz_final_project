@@ -1,0 +1,11 @@
+They do work, but a bit weird when only certain races are selected. The fact that almost concentric circles are differet charts is a problem.
+
+Could work. Try also adding local diviersity to show contrast? Overlapping circles a big problem. Maybe using area instead of radius of pie = # incident.
+
+Zoom based aggregation? represent num of incidences in area better. Opacity instead of radius for total number? radius size can mislead to be data of whole area covered. Selected slices should indicate they are selected.
+
+Legend, center of circle. Thought circle is data for all of area covered, not the center. Like the fact that for certain filters, you can see if the incident is an outlier or an active contributor. Overlap can be misinterpretted to be subsets of the bigger circle.
+
+Pie charts is sorta good, best of "bad" solution. Use opacity instead of radius encode size? Overlap is major issue.
+
+Understood the radius encoding. Thought pie slices is okay, but circle rerender would be better. 
