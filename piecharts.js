@@ -129,18 +129,18 @@ loadJSON(drawPieCharts);
 
 
 var overlays2 = {
-    "All Races": overlays["All"],
-    "<img src='aColor.png' /> <span class='my-layer-item'>Asian/Pacific Islander</span>": overlays["Asian/Pacific Islander"],
-    "<img src='bColor.png' /> <span class='my-layer-item'>Black</span>": overlays["Black"],
-    "<img src='iColor.png' /> <span class='my-layer-item'>American Indian/Alaskan Native</span>":overlays["American Indian/Alaskan Native"],
-    "<img src='pColor.png' /> <span class='my-layer-item'>Black-Hispanic</span>": overlays["Black-Hispanic"],
-    "<img src='qColor.png' /> <span class='my-layer-item'>White-Hispanic</span>": overlays["White-Hispanic"],
-    "<img src='wColor.png' /> <span class='my-layer-item'>Whiter</span>": overlays["White"],
-    "<img src='xColor.png' /> <span class='my-layer-item'>Unknown</span>": overlays["Unknown"],
-    "<img src='zColor.png' /> <span class='my-layer-item'>Other</span>": overlays["Other"]
+    "<img src='icons/allColor.png' /> <span class='my-layer-item'>All</span>": overlays["All"],
+    "<img src='icons/aColor.png' /> <span class='my-layer-item'>Asian/Pacific Islander</span>": overlays["Asian/Pacific Islander"],
+    "<img src='icons/bColor.png' /> <span class='my-layer-item'>Black</span>": overlays["Black"],
+    "<img src='icons/iColor.png' /> <span class='my-layer-item'>American Indian/Alaskan Native</span>":overlays["American Indian/Alaskan Native"],
+    "<img src='icons/pColor.png' /> <span class='my-layer-item'>Black-Hispanic</span>": overlays["Black-Hispanic"],
+    "<img src='icons/qColor.png' /> <span class='my-layer-item'>White-Hispanic</span>": overlays["White-Hispanic"],
+    "<img src='icons/wColor.png' /> <span class='my-layer-item'>Whiter</span>": overlays["White"],
+    "<img src='icons/xColor.png' /> <span class='my-layer-item'>Unknown</span>": overlays["Unknown"],
+    "<img src='icons/zColor.png' /> <span class='my-layer-item'>Other</span>": overlays["Other"]
 };
 
-L.control.layers(null, overlays2,{autoZIndex:false}).addTo(mymap);
+L.control.layers(null, overlays2,{autoZIndex:false,collapsed:false}).addTo(mymap);
 mymap.on("overlayadd",bringToFront);
 
 
