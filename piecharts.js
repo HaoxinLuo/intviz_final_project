@@ -4,14 +4,14 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
     'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    id: 'mapbox.streets'
+    id: 'mapbox.light'
 }).addTo(mymap);
 
 function loadJSON(callback) {   
     //http://codepen.io/KryptoniteDove/post/load-json-file-locally-using-pure-javascript
     var xobj = new XMLHttpRequest();
         xobj.overrideMimeType("application/json");
-    xobj.open('GET', 'data.json', true); // Replace 'my_data' with the path to your file
+    xobj.open('GET', 'data/data.json', true); // Replace 'my_data' with the path to your file
     xobj.onreadystatechange = function () {
           if (xobj.readyState == 4 && xobj.status == "200") {
             // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
@@ -112,6 +112,8 @@ function overlayActive(overlay){
     }
 }
 
+
+
 var overlays = {
     "All": new L.featureGroup(),
     "Asian/Pacific Islander": new L.featureGroup(),
@@ -123,9 +125,22 @@ var overlays = {
     "Unknown": new L.featureGroup(),
     "Other": new L.featureGroup()
 };
-
 loadJSON(drawPieCharts);
-L.control.layers(null, overlays,{autoZIndex:false}).addTo(mymap);
+
+
+var overlays2 = {
+    "All Races": overlays["All"],
+    "<img src='aColor.png' /> <span class='my-layer-item'>Asian/Pacific Islander</span>": overlays["Asian/Pacific Islander"],
+    "<img src='bColor.png' /> <span class='my-layer-item'>Black</span>": overlays["Black"],
+    "<img src='iColor.png' /> <span class='my-layer-item'>American Indian/Alaskan Native</span>":overlays["American Indian/Alaskan Native"],
+    "<img src='pColor.png' /> <span class='my-layer-item'>Black-Hispanic</span>": overlays["Black-Hispanic"],
+    "<img src='qColor.png' /> <span class='my-layer-item'>White-Hispanic</span>": overlays["White-Hispanic"],
+    "<img src='wColor.png' /> <span class='my-layer-item'>Whiter</span>": overlays["White"],
+    "<img src='xColor.png' /> <span class='my-layer-item'>Unknown</span>": overlays["Unknown"],
+    "<img src='zColor.png' /> <span class='my-layer-item'>Other</span>": overlays["Other"]
+};
+
+L.control.layers(null, overlays2,{autoZIndex:false}).addTo(mymap);
 mymap.on("overlayadd",bringToFront);
 
 
