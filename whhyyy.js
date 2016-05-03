@@ -155,18 +155,19 @@ loadJSON(drawAllCircles);
 
 var overlays = {
     "All": allRaces,
-    "Asian/Pacific Islander": asian,
-    "Black": black,
-    "American Indian/Alaskan Native": amerIndian,
-    "Black-Hispanic": blcHispanic,
-    "White-Hispanic": whtHispanic,
-    "White": white,
-    "Unknown": unknown,
-    "Other": other 
+    "<img src='aColor.png' /> <span class='my-layer-item'>Asian/Pacific Islander</span>": asian,
+    "<img src='bColor.png' /> <span class='my-layer-item'>Black</span>": black,
+    "<img src='iColor.png' /> <span class='my-layer-item'>American Indian/Alaskan Native</span>": amerIndian,
+    "<img src='pColor.png' /> <span class='my-layer-item'>Black-Hispanic</span>": blcHispanic,
+    "<img src='qColor.png' /> <span class='my-layer-item'>White-Hispanic</span>": whtHispanic,
+    "<img src='wColor.png' /> <span class='my-layer-item'>Whiter</span>": white,
+    "<img src='xColor.png' /> <span class='my-layer-item'>Unknown</span>": unknown,
+    "<img src='zColor.png' /> <span class='my-layer-item'>Other</span>": other
 };
 
 L.control.layers(null, overlays).addTo(mymap);
 
+var legend = L.control({position: 'bottomright'})
 
 //var popup = L.popup();
 
