@@ -1,4 +1,5 @@
 /* http://bl.ocks.org/gisminister/10001728  */
+var mHeight = 800,mWidth = 1000;
 var latlngBounds = [[40.914550362677204,-73.65509033203126],
                     [40.498136668508536,-74.34173583984376]];
 var raceColor = {'A':'#1b9e77','B':'#d95f02','I':'#7570b3','P':'#e7298a',
@@ -14,10 +15,15 @@ var boroName = {
     "MANHATTAN":"Manhattan"
 };
 
+d3.select('#mapid')
+    .style("width",mWidth+"px")
+    .style("height",mHeight+"px");
+
 var mymap = L.map('mapid')
     .setView([40.73, -73.99], 11)
     .setMaxBounds(latlngBounds)
-    .setMinZoom(11);
+    .setMinZoom(11)
+
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token'+
             '=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkif'+
             'Q._QA7i5Mpkd_m30IGElHziw', 
@@ -33,11 +39,27 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token'+
                 bounds:latlngBounds
             })
     .addTo(mymap);
-var rmax = 30;
+var rmax = 50;
 
-
+var getMinMaxCluster = function(){
+    var clusters = document.getElementsByClassName("pie-cluster-center-text");
+    var min = -1,max = -1;
+    for(var i = 0;i<clusters.length;i++){
+	var cluster = clusters[i];
+	var s = cluster.parentNode.parentNode.style.transform;
+	var dx = parseInt(s.substring(s.indexOf('(')+1))||-1;
+	var dy = parseInt(s.substring(s.indexOf(',')+1))||-1;
+	var size = parseInt(cluster.innerHTML);
+	if(!isNaN(size) && (min == -1 || min>size))
+	    min = size
+	if(max<size)
+	    max = size
+    }
+    return [min,max];
+}
 
 var myIconFxn = function(cluster){
+    console.log("run");
     var incidents = cluster.getAllChildMarkers();
     var n = incidents.length;
     var strokeWidth = 1; //strokeWidth of slice boundary
@@ -95,6 +117,9 @@ var createPieChart = function(options){
 	.attr("stroke-width",options.strokeWidth)
 	.attr("d",arc)
 	.style("fill",options.colorFxn)
+	.style("opacity",function(d){
+	    var n = options.centerText;
+	    return n<20?.2:n<100?.4:n<500?.6:n<1000?.8:n<2000?.9:1 })
 	.append("svg:title")
 	.text(options.sliceTooltip);
     
