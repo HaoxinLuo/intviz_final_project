@@ -2,10 +2,6 @@
 <meta charset="utf-8">
 <style>
 
-.bar:hover {
-  fill: brown;
-}
-
 .axis {
   font: 10px sans-serif;
 }
@@ -45,6 +41,10 @@ var yAxis = d3.svg.axis()
     .orient("left")
     .ticks(10);
 
+var races = {'A':'#1b9e77','B':'#d95f02','I':'#7570b3','P':'#e7298a',
+	     'Q':'#66a61e','W':'#e6ab00','X':'#a6761d','Z':'#666666'};
+
+
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -80,7 +80,7 @@ d3.tsv("data/pseudoData.tsv", type, function(error, data) {
       .attr("width", x.rangeBand()/8 - 1)
       .attr("y", function(d) { return y(d.frequency); })
       .attr("height", function(d) { return height - y(d.frequency); })
-      .attr("fill", function(d) {return d.fill;});
+      .attr("fill", function(d) {return races[d.race];});
 });
 
 function type(d) {
