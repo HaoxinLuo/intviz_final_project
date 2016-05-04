@@ -15,6 +15,8 @@ var boroName = {
     "MANHATTAN":"Manhattan"
 };
 
+var incidScale = d3.scale.linear().range([.3,1]);
+
 d3.select('#mapid')
     .style("width",mWidth+"px")
     .style("height",mHeight+"px");
@@ -44,28 +46,40 @@ var rmax = 50;
 var getMinMaxCluster = function(){
     var clusters = document.getElementsByClassName("pie-cluster-center-text");
     var min = -1,max = -1;
+    var m,M;
+    var bnds = mymap.getBounds();
+    var ne = mymap.latLngToLayerPoint(bnds._northEast);
+    var sw = mymap.latLngToLayerPoint(bnds._southWest);
+    var minX = sw.x,maxX = ne.x,minY = ne.y,maxY = sw.y;
     for(var i = 0;i<clusters.length;i++){
 	var cluster = clusters[i];
 	var s = cluster.parentNode.parentNode.style.transform;
 	var dx = parseInt(s.substring(s.indexOf('(')+1))||-1;
 	var dy = parseInt(s.substring(s.indexOf(',')+1))||-1;
-	var size = parseInt(cluster.innerHTML);
-	if(!isNaN(size) && (min == -1 || min>size))
-	    min = size
-	if(max<size)
-	    max = size
+	if(dx<minX || dy<minY||dx>maxX || dy>maxY){
+	    continue;
+	}
+	var size = parseInt(cluster.innerHTML)||-1;
+	if(isNaN(size))
+	    continue;
+	if(min == -1 || min>size){
+	    min = size;
+	}
+	if(max<size){
+	    max = size;
+	}
     }
     return [min,max];
 }
 
 var myIconFxn = function(cluster){
-    console.log("run");
+    //console.log("run");
     var incidents = cluster.getAllChildMarkers();
     var n = incidents.length;
     var strokeWidth = 1; //strokeWidth of slice boundary
     var r = rmax-2*strokeWidth-(n<10?12:n<100?8:n<1000?4:0);
     var iconDim = (r+strokeWidth)*2;
-    
+    //console.log(incidScale.domain(),n,cluster,incidScale(n));
     var data = d3.nest()
 	.key(function(d){return d.options.race;})
 	.entries(incidents);
@@ -80,7 +94,8 @@ var myIconFxn = function(cluster){
 	sliceTooltip:function(d){
 	    return d.data.values.length+' '+raceName[d.data.key];},
 	colorFxn:function(d){return raceColor[d.data.key]},
-	centerText:n
+	centerText:n,
+	opacityFxn:function(){return incidScale(n);}
     };
 
     var html = createPieChart(options);
@@ -117,9 +132,7 @@ var createPieChart = function(options){
 	.attr("stroke-width",options.strokeWidth)
 	.attr("d",arc)
 	.style("fill",options.colorFxn)
-	.style("opacity",function(d){
-	    var n = options.centerText;
-	    return n<20?.2:n<100?.4:n<500?.6:n<1000?.8:n<2000?.9:1 })
+	.style("opacity",options.opacityFxn)
 	.append("svg:title")
 	.text(options.sliceTooltip);
     
@@ -178,6 +191,7 @@ var loadedJson = function(err,data){
     }
 };
 
+
 var mcg = L.markerClusterGroup({
     maxClusterRadius:2*rmax,
 //    spiderfyOnMaxZoom:false,
@@ -201,8 +215,22 @@ var boroGrp = {
     "Brooklyn":  L.featureGroup.subGroup(mcg),
 };
 
+var updateScale = function(){
+    incidScale.domain(getMinMaxCluster());
+    console.log('upd',incidScale.domain());
+    mcg.refreshClusters();
+    return;
+};
+
 d3.json("data/fullData.json",loadedJson);
 
 mymap.addLayer(mcg);
 mymap.addControl(L.control.layers(null,raceGrp,{collapsed:false}));
 mymap.addControl(L.control.layers(null,boroGrp,{collapsed:false}));
+mymap.on("overlayadd",updateScale);
+mymap.on("overlayremove",updateScale);
+mcg.on("animationend",updateScale);
+//mymap.on("mouseup",updateScale);
+mymap.on("moveend",updateScale);
+
+
