@@ -1,17 +1,30 @@
-var mymap = L.map('mapid').setView([40.73, -73.99], 11);
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
-    maxZoom: 18,
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-    'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    id: 'mapbox.streets'
-}).addTo(mymap);
+var latlngBounds = [[40.914550362677204,-73.65509033203126],
+		    [40.498136668508536,-74.34173583984376]];
+var mymap = L.map('mapid')
+    .setView([40.73, -73.99], 11)
+    .setMaxBounds(latlngBounds)
+    .setMinZoom(11);
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token'+
+	    '=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkif'+
+	    'Q._QA7i5Mpkd_m30IGElHziw', 
+	    {
+		maxZoom: 18,
+		minZoom: 11,
+		attribution: 'Map data &copy;'+
+		    '<a href="http://openstreetmap.org">OpenStreetMap</a>'+
+		    'contributors,<a href="http://creativecommons.org/'+
+		    'licenses/by-sa/2.0/">CC-BY-SA</a>,Imagery ©'+
+		    '<a href="http://mapbox.com">Mapbox</a>',
+		id: 'mapbox.streets',
+		bounds:latlngBounds
+	    })
+    .addTo(mymap);
 
 function loadJSON(callback) {   
     //http://codepen.io/KryptoniteDove/post/load-json-file-locally-using-pure-javascript
     var xobj = new XMLHttpRequest();
         xobj.overrideMimeType("application/json");
-    xobj.open('GET', 'data.json', true); // Replace 'my_data' with the path to your file
+    xobj.open('GET', 'data/fullData.json', true); // Replace 'my_data' with the path to your file
     xobj.onreadystatechange = function () {
           if (xobj.readyState == 4 && xobj.status == "200") {
             // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
@@ -23,32 +36,27 @@ function loadJSON(callback) {
 
 function drawPieCharts(response){
     var data = JSON.parse(response);
-//    points = [];
     for(var borough in data){
 	for(var zipcode in data[borough]){
 	    for(var loc in data[borough][zipcode]){
 		place = data[borough][zipcode][loc]
 		//createPieChart(place).addTo(mymap);
 		var pie = createPieChart(place);
-//		points.push(pie);
 	    }
 	}
     }
-    // points.sort(function(a,b){
-    // 	return b._numPpl - a._numPpl;
-    // });
-    // for(var point in points){
-    // 	//points[point].addTo(mymap);
-    // }
+
 }
 
 function createPieChart(place){
+    totalPlace++;
     var data = {};
     var total = place.data.length;
     for(var person in place.data){
 	var race = place.data[person].race;
 	if (!(race in data)){data[race]=0;}
 	data[race] +=1;
+	totalIncident++;
     }
     // var group = L.layerGroup();	
     var startAngle = 0;
@@ -87,6 +95,7 @@ function getColor(race){
 }
 
 function bringToFront(e){
+    console.log(totalPlace,totalIncident);
     activeSlices = []
     for(var race in overlays){
 	overlay = overlays[race];
@@ -124,8 +133,26 @@ var overlays = {
     "Other": new L.featureGroup()
 };
 
+var totalPlace = 0, totalIncident = 0;
+
 loadJSON(drawPieCharts);
 L.control.layers(null, overlays,{autoZIndex:false}).addTo(mymap);
 mymap.on("overlayadd",bringToFront);
 
-
+// would identify every overlaping circle
+// still need to use grid to find neighbors so to check intersect
+// var llb2pb = function(elem){
+//     var b = elem.getBounds();
+//     return L.bounds(mymap.latLngToContainerPoint(b._northEast),
+// 		    mymap.latLngToContainerPoint(b._southWest))
+// }
+// var zlvl = mymap.getZoom();
+// var ol = function(){
+//     if(zlvl==mymap.getZoom())
+//         return;
+//     zlvl = mymap.getZoom();
+//     var b1 = llb2pb(c1),
+//     b2=llb2pb(c2);
+//     console.log(b1.intersects(b2),b1,b2);
+// }
+// mymap.on("moveend",ol)
