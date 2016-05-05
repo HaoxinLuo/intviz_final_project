@@ -1,7 +1,4 @@
 /* http://bl.ocks.org/gisminister/10001728  */
-var mHeight = 800,mWidth = 1000;
-var latlngBounds = [[40.914550362677204,-73.65509033203126],
-                    [40.498136668508536,-74.34173583984376]];
 var raceColor = {'A':'#1b9e77','B':'#d95f02','I':'#7570b3','P':'#e7298a',
 	     'Q':'#66a61e','W':'#e6ab00','U':'#a6761d','Z':'#666666'};
 var raceName = {'A':'Asian/Pacific Islander','B':'Black',
@@ -17,31 +14,47 @@ var boroName = {
 
 var incidScale = d3.scale.linear().range([.3,1]);
 
+var mHeight = 800,mWidth = 1000,minZoom=11,maxZoom=17;
 d3.select('#mapid')
     .style("width",mWidth+"px")
     .style("height",mHeight+"px");
 
+var rmax = 50;
+var latlngBounds = [[40.914550362677204,-73.65509033203126],
+                    [40.498136668508536,-74.34173583984376]];
 var mymap = L.map('mapid')
     .setView([40.73, -73.99], 11)
     .setMaxBounds(latlngBounds)
-    .setMinZoom(11)
+    .setMinZoom(minZoom)
+    .setMaxZoom(maxZoom);
+// L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token'+
+//             '=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkif'+
+//             'Q._QA7i5Mpkd_m30IGElHziw', 
+//             {
+//                 maxZoom: 17,
+//                 minZoom: 11,
+//                 attribution: 'Map data &copy;'+
+//                     '<a href="http://openstreetmap.org">OpenStreetMap</a>'+
+//                     'contributors,<a href="http://creativecommons.org/'+
+//                     'licenses/by-sa/2.0/">CC-BY-SA</a>,Imagery ©'+
+//                     '<a href="http://mapbox.com">Mapbox</a>',
+//                 id: 'mapbox.streets',
+//                 bounds:latlngBounds
+//             })
+//     .addTo(mymap);
 
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token'+
-            '=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkif'+
-            'Q._QA7i5Mpkd_m30IGElHziw', 
-            {
-                maxZoom: 17,
-                minZoom: 11,
-                attribution: 'Map data &copy;'+
-                    '<a href="http://openstreetmap.org">OpenStreetMap</a>'+
-                    'contributors,<a href="http://creativecommons.org/'+
-                    'licenses/by-sa/2.0/">CC-BY-SA</a>,Imagery ©'+
-                    '<a href="http://mapbox.com">Mapbox</a>',
-                id: 'mapbox.streets',
-                bounds:latlngBounds
-            })
-    .addTo(mymap);
-var rmax = 50;
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token='
+	    +'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ'
+	    +'._QA7i5Mpkd_m30IGElHziw', {
+    maxZoom: maxZoom,
+    minZoom: minZoom,
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+    'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    id: 'mapbox.light',
+    bounds:latlngBounds
+}).addTo(mymap);
+
 
 var getMinMaxCluster = function(){
     var clusters = document.getElementsByClassName("pie-cluster-center-text");
@@ -157,7 +170,6 @@ var serializeXmlNode = function(xmlNode) {
 }
 
 var createMarker = function(latlng,incident){
-    
     return L.circleMarker(latlng,L.extend({
 	radius:10,
 	color:raceColor[incident.race],
@@ -165,7 +177,6 @@ var createMarker = function(latlng,incident){
 	opacity:.5,
     },incident));
 }
-
 
 var loadedJson = function(err,data){
     if(err)
@@ -196,6 +207,7 @@ var mcg = L.markerClusterGroup({
     maxClusterRadius:2*rmax,
 //    spiderfyOnMaxZoom:false,
     iconCreateFunction:myIconFxn});
+
 var raceGrp = {
     "All": L.featureGroup.subGroup(mcg),
     "Asian/Pacific Islander":  L.featureGroup.subGroup(mcg),
@@ -215,6 +227,27 @@ var boroGrp = {
     "Brooklyn":  L.featureGroup.subGroup(mcg),
 };
 
+var imagedCtrlGrp = {
+    "<img src='icons/allColor.png' /> <span class='my-layer-item'>All</span>": 
+    raceGrp["All"],
+    "<img src='icons/aColor.png' /> <span class='my-layer-item'>Asian/Pacific Islander</span>":
+    raceGrp["Asian/Pacific Islander"],
+    "<img src='icons/bColor.png' /> <span class='my-layer-item'>Black</span>": 
+    raceGrp["Black"],
+    "<img src='icons/iColor.png'/><span class='my-layer-item'>American Indian/Alaskan Native</span>":
+    raceGrp["American Indian/Alaskan Native"],
+    "<img src='icons/pColor.png' /> <span class='my-layer-item'>Black-Hispanic</span>":
+    raceGrp["Black-Hispanic"],
+    "<img src='icons/qColor.png' /> <span class='my-layer-item'>White-Hispanic</span>": 
+    raceGrp["White-Hispanic"],
+    "<img src='icons/wColor.png' /> <span class='my-layer-item'>Whiter</span>": 
+    raceGrp["White"],
+    "<img src='icons/xColor.png' /> <span class='my-layer-item'>Unknown</span>": 
+    raceGrp["Unknown"],
+    "<img src='icons/zColor.png' /> <span class='my-layer-item'>Other</span>": 
+    raceGrp["Other"]
+};
+
 var updateScale = function(){
     incidScale.domain(getMinMaxCluster());
     console.log('upd',incidScale.domain());
@@ -225,12 +258,13 @@ var updateScale = function(){
 d3.json("data/fullData.json",loadedJson);
 
 mymap.addLayer(mcg);
-mymap.addControl(L.control.layers(null,raceGrp,{collapsed:false}));
+mymap.addControl(L.control.layers(null,imagedCtrlGrp,{collapsed:false}));
 mymap.addControl(L.control.layers(null,boroGrp,{collapsed:false}));
-mymap.on("overlayadd",updateScale);
-mymap.on("overlayremove",updateScale);
+mymap.on({
+    "overlayadd":updateScale,
+    "overlayremove":updateScale,
+    "moveend":updateScale
+});
 mcg.on("animationend",updateScale);
-//mymap.on("mouseup",updateScale);
-mymap.on("moveend",updateScale);
 
 
