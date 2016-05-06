@@ -14,10 +14,13 @@ var boroName = {
 
 var incidScale = d3.scale.linear().range([.3,1]);
 
-var mHeight = 800,mWidth = 1000,minZoom=11,maxZoom=17;
+var mHeight = document.documentElement.clientHeight+'px',
+mWidth = document.documentElement.clientWidth+'px';
+var minZoom=11,maxZoom=17;
+//console.log(mHeight,mWidth);
 d3.select('#mapid')
-    .style("width",mWidth+"px")
-    .style("height",mHeight+"px");
+    // .style("width",mWidth)
+    // .style("height",mHeight);
 
 var rmax = 50;
 var latlngBounds = [[40.914550362677204,-73.65509033203126],
@@ -36,8 +39,8 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token='
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
     'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    id: 'mapbox.light',
-    bounds:latlngBounds
+    id: 'mapbox.light'
+    //bounds:latlngBounds
 }).addTo(mymap);
 
 
