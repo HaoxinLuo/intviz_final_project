@@ -26,7 +26,7 @@ var tellMeWhatDo = function(feature,layer){
 
 var incColorScale = {
     scale : d3.scale.quantize().range(
-	['#bcbddc','#9e9ac8','#807dba','#6a51a3','#54278f','#3f007d']),
+	['#ffffff','#f0f0f0','#d9d9d9','#bdbdbd','#969696','#737373']),
     county : [Number.MAX_VALUE,0],
     tract : [Number.MAX_VALUE,0],    
     calcDomain: function(feature){
@@ -45,8 +45,8 @@ var incColorScale = {
 }
 
 var raceColorScale = {
-    raceColor : {'as':'#1b9e77','bl':'#d95f02','am':'#7570b3',
-		 'hi':'#e7298a','wh':'#e6ab00','tw':'#a6761d','ot':'#666666'},
+    raceColor : {'as':'#bef8e4','bl':'#fdc59b','am':'#dfdeed',
+		 'hi':'#fad1e6','wh':'#ffecb3','tw':'#f4e1be','ot':'#e6e6e6'},
     storage: {},
     findDomRace :function(d){
 	var max = 0,dom = '';
