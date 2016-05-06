@@ -10,14 +10,23 @@ html,body{
     padding:0px;
 }
 
-.toolbar{
+.toolbar{ /* the actual right hand toolbar */
     background-color:#FFFFFF;
     width: 15vw;
     height: 96vh;
 }
+.label{ /* all section labels */
+    font-size:16px;
+}
 
-.race-selector{ /* div of every race */
+/**************************************** RACE SECTION *****************************************/
+.race-options{ /* block of all race related stuff */ }
+
+.race-options-label{ /* label 'Race' for the block */ }
+
+.race-selector{ /* selection div of every race */
     font-size: 13px;
+    padding-left: 1vw;
 }
 
 .race-A{ /* div of asian */
@@ -67,4 +76,48 @@ html,body{
 }
 .race-Z.selected{ /* div of other */
     background:rgba(102,102,102,1);
+}
+/*************************** BOROUGH SECTION *********************************************/
+
+.boro-options{ /* block of all borough stuff */ }
+
+.boro-options-label{ /* label 'Borough' */ }
+
+.boro-selector{ /* all borough selectors */
+    background:rgba(173,216,230,.7);
+    padding-left:1vw;
+}
+.boro-selector.selected{ /* all borough selector selected*/
+    background:rgba(173,216,230,1);
+}
+.boro-QUEENS{ /* Queens selector */ }
+.boro-BROOKLYN{ /* Queens selector */ }
+/* etc */
+
+/************************** INCOME/RACE SECTION ******************************************/
+
+.incR-options{ /* block of all borough stuff */ }
+
+.incR-options-label{ /* label Income and Majority Race */ }
+
+.incR-selectors{
+    align-items:center;
+}
+.incR-selector{
+    background:#C5BCBC;
+}
+.incR-selector.selected{
+    background:#9C9898;
+}
+.incR-N{
+    display:inline;
+    padding-left:5px;
+}
+.incR-I{
+    display:inline;
+    padding-left:5px;
+}
+.incR-R{
+    display:inline;
+    padding-left:5px;
 }

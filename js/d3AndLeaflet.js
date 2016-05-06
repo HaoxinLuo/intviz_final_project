@@ -291,18 +291,55 @@ mcg.on("animationend",updateScale);
 
 var toolbar = L.control({position:'topright'});
 toolbar.onAdd = function(map){
-    var div = L.DomUtil.create("div","toolbar");
-    L.DomEvent.disableClickPropagation(div);
-    L.DomEvent.disableScrollPropagation(div);
-    d3.select(div).selectAll('.race-selector').data(Object.keys(raceColor)).enter()
+    var bar = L.DomUtil.create("div","toolbar");
+
+    addRaceControls(bar);
+    d3.select(bar).append("hr").classed("section-bar",true);
+    addBoroControls(bar);
+    d3.select(bar).append("hr").classed("section-bar",true);
+    addIncRControls(bar);
+    L.DomEvent.disableClickPropagation(bar);
+    L.DomEvent.disableScrollPropagation(bar);
+    return bar
+};
+
+var addRaceControls = function(bar){
+    var raceDiv = d3.select(bar).append("div").classed("race-options",true)[0][0];
+    d3.select(raceDiv).append("span").classed("race-options-label label",true).text("Race");
+    d3.select(raceDiv).selectAll('.race-selector').data(Object.keys(raceColor)).enter()
 	.append('div')
 	.attr("class",function(d,i){return "race-selector race-"+d;})
 	.on("click",function(d,i){
-	    d3.select(this).classed("selected",!this.classList.contains("selected")
-				             /*!d3.select(this).classed("selected")*/ )})
+	    d3.select(this).classed("selected",!this.classList.contains("selected"))})
 	//.style({background:function(d,i){return raceColor[d];}}) /* leave this to CSS */
 	.text(function(d){return raceName[d];})
-    return div;
+
+};
+
+var addBoroControls = function(bar){
+    var boroDiv = d3.select(bar).append("div").classed("boro-options",true)[0][0];
+    d3.select(boroDiv).append("span").classed("boro-options-label label",true).text("Borough");
+    d3.select(boroDiv).selectAll(".boro-selector").data(Object.keys(boroName)).enter()
+	.append('div')
+	.attr('class',function(d,i){return 'boro-selector boro-'+d;})
+	.on("click",function(d,i){
+	    d3.select(this).classed("selected",!this.classList.contains("selected"))})
+	.text(function(d){return boroName[d];})
+
+};
+
+var addIncRControls = function(bar){
+    var incRStates = {'N':'None','I':'Income','R':'Largest Race'};
+    var incRDiv = d3.select(bar).append("div").classed("incR-options",true)[0][0];
+    d3.select(incRDiv).append("span").classed("incR-options-label label",true)
+	.text("Income and Majority Race");
+    d3.select(incRDiv).append('div').classed("incR-selectors",true)
+	.selectAll(".boro-selector").data(Object.keys(incRStates)).enter()
+	.append('div')
+	.attr('class',function(d,i){return 'incR-selector incR-'+d;})
+	.on("click",function(d,i){
+	    d3.select(this).classed("selected",!this.classList.contains("selected"))})
+	.text(function(d){return incRStates[d];});
 
 };
 
