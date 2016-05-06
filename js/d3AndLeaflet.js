@@ -27,21 +27,6 @@ var mymap = L.map('mapid')
     .setMaxBounds(latlngBounds)
     .setMinZoom(minZoom)
     .setMaxZoom(maxZoom);
-// L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token'+
-//             '=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkif'+
-//             'Q._QA7i5Mpkd_m30IGElHziw', 
-//             {
-//                 maxZoom: 17,
-//                 minZoom: 11,
-//                 attribution: 'Map data &copy;'+
-//                     '<a href="http://openstreetmap.org">OpenStreetMap</a>'+
-//                     'contributors,<a href="http://creativecommons.org/'+
-//                     'licenses/by-sa/2.0/">CC-BY-SA</a>,Imagery ©'+
-//                     '<a href="http://mapbox.com">Mapbox</a>',
-//                 id: 'mapbox.streets',
-//                 bounds:latlngBounds
-//             })
-//     .addTo(mymap);
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token='
 	    +'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ'
@@ -250,19 +235,65 @@ var imagedCtrlGrp = {
 
 var updateScale = function(){
     incidScale.domain(getMinMaxCluster());
-    console.log('upd',incidScale.domain());
+    //console.log('upd',incidScale.domain());
     mcg.refreshClusters();
     return;
 };
 
-d3.json("data/fullData.json",loadedJson);
+var updateThings = function(ev){
+    foo = ev;
+    if(ev.type=='overlayadd'&&(ev.name == 'tract' || ev.name=='county'))
+	updateBkgrdColor(ev);
+    else if(ev.name=="income/race"){
+	visInc = !visInc;
+	if(mymap.hasLayer(bkgrdGrp['tract']))
+	    updateBkgrdColor({'layer':bkgrdGrp['tract']});
+	else if(mymap.hasLayer(bkgrdGrp['county']))
+	    updateBkgrdColor({'layer':bkgrdGrp['county']});	
+    }
+    else
+	updateScale();
+};
+
+//d3.json("data/fullData.json",loadedJson);
+d3_queue.queue()
+    .defer(d3.json,"data/countyIncRace.json")
+    .defer(d3.json,"data/tractIncRace.json")
+    .defer(d3.json,"data/fullData.json")
+    .await(function(err,data,data2,data3){
+	if(err){
+	    console.log(err,data);
+	    return;
+	}
+	loadedJson(err,data3);
+	for(var i in data.features){
+	    incColorScale.calcDomain(data.features[i]);
+	}
+	for(var i in data2.features){
+	    incColorScale.calcDomain(data2.features[i]);
+	}
+	bkgrdGrp['county'] = L.geoJson(data,{style:giveMeStyle,onEachFeature:tellMeWhatDo});
+	bkgrdGrp['tract'] = L.geoJson(data2,{style:giveMeStyle,onEachFeature:tellMeWhatDo});
+	// mymap.addControl(L.control.layers(null,
+	//     {"county":countyLayer,
+	//      "tract":tractLayer,
+	//      "income/race":L.circle([0,0],0)},{collapsed:false}));
+	mymap.addControl(L.control.layers(null,bkgrdGrp,{collapsed:false}));
+    });
+
+var foo;
+
+var bkgrdGrp = {
+    "income/race":L.circle([0,0],0)
+};
 
 mymap.addLayer(mcg);
 mymap.addControl(L.control.layers(null,imagedCtrlGrp,{collapsed:false}));
 mymap.addControl(L.control.layers(null,boroGrp,{collapsed:false}));
+
 mymap.on({
-    "overlayadd":updateScale,
-    "overlayremove":updateScale,
+    "overlayadd":updateThings,
+    "overlayremove":updateThings,
     "moveend":updateScale
 });
 mcg.on("animationend",updateScale);
