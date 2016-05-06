@@ -292,12 +292,19 @@ mcg.on("animationend",updateScale);
 var toolbar = L.control({position:'topright'});
 toolbar.onAdd = function(map){
     var div = L.DomUtil.create("div","toolbar");
+    L.DomEvent.disableClickPropagation(div);
+    L.DomEvent.disableScrollPropagation(div);
     d3.select(div).selectAll('.race-selector').data(Object.keys(raceColor)).enter()
 	.append('div')
 	.attr("class",function(d,i){return "race-selector race-"+d;})
-	.style({background:function(d,i){return raceColor[d];}})
+	.on("click",function(d,i){
+	    d3.select(this).classed("selected",!this.classList.contains("selected")
+				             /*!d3.select(this).classed("selected")*/ )})
+	//.style({background:function(d,i){return raceColor[d];}}) /* leave this to CSS */
 	.text(function(d){return raceName[d];})
     return div;
 
 };
+
+
 mymap.addControl(toolbar);
