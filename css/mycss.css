@@ -21,26 +21,26 @@ html,body{
 }
 
 .race-A{ /* div of asian */
-    background:rbga(27,158,119,.7);
+    background:rgba(27,158,119,.7);
 }
 .race-B{ /* div of black */
-    background:rbga(217,95,2,.7);
+    background:rgba(217,95,2,.7);
 }
 .race-I{ /* div of american indian */
-    background:rbga(117,112,179,.7);
+    background:rgba(117,112,179,.7);
 }
 .race-P{ /* div of black-hispanic */
-    background:rbga(231,41,138,.7);
+    background:rgba(231,41,138,.7);
 }
 .race-Q{ /* div of white-hispanic */
-    background:rbga(102,166,30,.7);
+    background:rgba(102,166,30,.7);
 }
 .race-W{ /* div of white */
-    background:rbga(230,171,0,.7);
+    background:rgba(230,171,0,.7);
 }
 .race-U{ /* div of unknown */
-    background:rbga(166,118,29,.7);
+    background:rgba(166,118,29,.7);
 }
 .race-Z{ /* div of other */
-    background:rbga(102,102,102,.7);
+    background:rgba(102,102,102,.7);
 }
