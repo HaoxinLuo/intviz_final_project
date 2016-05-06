@@ -13,12 +13,7 @@ var boroName = {
 };
 
 var incidScale = d3.scale.linear().range([.3,1]);
-
-var mHeight = 800,mWidth = 1000,minZoom=11,maxZoom=17;
-d3.select('#mapid')
-    .style("width",mWidth+"px")
-    .style("height",mHeight+"px");
-
+var minZoom=11,maxZoom=17;
 var rmax = 50;
 var latlngBounds = [[40.914550362677204,-73.65509033203126],
                     [40.498136668508536,-74.34173583984376]];
@@ -36,8 +31,8 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token='
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
     'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    id: 'mapbox.light',
-    bounds:latlngBounds
+    id: 'mapbox.light'
+    //bounds:latlngBounds
 }).addTo(mymap);
 
 
@@ -274,11 +269,7 @@ d3_queue.queue()
 	}
 	bkgrdGrp['county'] = L.geoJson(data,{style:giveMeStyle,onEachFeature:tellMeWhatDo});
 	bkgrdGrp['tract'] = L.geoJson(data2,{style:giveMeStyle,onEachFeature:tellMeWhatDo});
-	// mymap.addControl(L.control.layers(null,
-	//     {"county":countyLayer,
-	//      "tract":tractLayer,
-	//      "income/race":L.circle([0,0],0)},{collapsed:false}));
-	mymap.addControl(L.control.layers(null,bkgrdGrp,{collapsed:false}));
+	mymap.addControl(L.control.layers(null,bkgrdGrp,{collapsed:false,position:'topleft'}));
     });
 
 var foo;
@@ -288,8 +279,8 @@ var bkgrdGrp = {
 };
 
 mymap.addLayer(mcg);
-mymap.addControl(L.control.layers(null,imagedCtrlGrp,{collapsed:false}));
-mymap.addControl(L.control.layers(null,boroGrp,{collapsed:false}));
+mymap.addControl(L.control.layers(null,imagedCtrlGrp,{collapsed:false,position:'topleft'}));
+mymap.addControl(L.control.layers(null,boroGrp,{collapsed:false,position:'topleft'}));
 
 mymap.on({
     "overlayadd":updateThings,
@@ -298,4 +289,59 @@ mymap.on({
 });
 mcg.on("animationend",updateScale);
 
+var toolbar = L.control({position:'topright'});
+toolbar.onAdd = function(map){
+    var bar = L.DomUtil.create("div","toolbar");
 
+    addRaceControls(bar);
+    d3.select(bar).append("hr").classed("section-bar",true);
+    addBoroControls(bar);
+    d3.select(bar).append("hr").classed("section-bar",true);
+    addIncRControls(bar);
+    L.DomEvent.disableClickPropagation(bar);
+    L.DomEvent.disableScrollPropagation(bar);
+    return bar
+};
+
+var addRaceControls = function(bar){
+    var raceDiv = d3.select(bar).append("div").classed("race-options",true)[0][0];
+    d3.select(raceDiv).append("span").classed("race-options-label label",true).text("Race");
+    d3.select(raceDiv).selectAll('.race-selector').data(Object.keys(raceColor)).enter()
+	.append('div')
+	.attr("class",function(d,i){return "race-selector race-"+d;})
+	.on("click",function(d,i){
+	    d3.select(this).classed("selected",!this.classList.contains("selected"))})
+	//.style({background:function(d,i){return raceColor[d];}}) /* leave this to CSS */
+	.text(function(d){return raceName[d];})
+
+};
+
+var addBoroControls = function(bar){
+    var boroDiv = d3.select(bar).append("div").classed("boro-options",true)[0][0];
+    d3.select(boroDiv).append("span").classed("boro-options-label label",true).text("Borough");
+    d3.select(boroDiv).selectAll(".boro-selector").data(Object.keys(boroName)).enter()
+	.append('div')
+	.attr('class',function(d,i){return 'boro-selector boro-'+d;})
+	.on("click",function(d,i){
+	    d3.select(this).classed("selected",!this.classList.contains("selected"))})
+	.text(function(d){return boroName[d];})
+
+};
+
+var addIncRControls = function(bar){
+    var incRStates = {'N':'None','I':'Income','R':'Largest Race'};
+    var incRDiv = d3.select(bar).append("div").classed("incR-options",true)[0][0];
+    d3.select(incRDiv).append("span").classed("incR-options-label label",true)
+	.text("Income and Majority Race");
+    d3.select(incRDiv).append('div').classed("incR-selectors",true)
+	.selectAll(".boro-selector").data(Object.keys(incRStates)).enter()
+	.append('div')
+	.attr('class',function(d,i){return 'incR-selector incR-'+d;})
+	.on("click",function(d,i){
+	    d3.select(this).classed("selected",!this.classList.contains("selected"))})
+	.text(function(d){return incRStates[d];});
+
+};
+
+
+mymap.addControl(toolbar);
