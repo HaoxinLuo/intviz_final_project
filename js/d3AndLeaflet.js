@@ -13,15 +13,7 @@ var boroName = {
 };
 
 var incidScale = d3.scale.linear().range([.3,1]);
-
-var mHeight = document.documentElement.clientHeight+'px',
-mWidth = document.documentElement.clientWidth+'px';
 var minZoom=11,maxZoom=17;
-//console.log(mHeight,mWidth);
-d3.select('#mapid')
-    // .style("width",mWidth)
-    // .style("height",mHeight);
-
 var rmax = 50;
 var latlngBounds = [[40.914550362677204,-73.65509033203126],
                     [40.498136668508536,-74.34173583984376]];
@@ -277,11 +269,7 @@ d3_queue.queue()
 	}
 	bkgrdGrp['county'] = L.geoJson(data,{style:giveMeStyle,onEachFeature:tellMeWhatDo});
 	bkgrdGrp['tract'] = L.geoJson(data2,{style:giveMeStyle,onEachFeature:tellMeWhatDo});
-	// mymap.addControl(L.control.layers(null,
-	//     {"county":countyLayer,
-	//      "tract":tractLayer,
-	//      "income/race":L.circle([0,0],0)},{collapsed:false}));
-	mymap.addControl(L.control.layers(null,bkgrdGrp,{collapsed:false}));
+	mymap.addControl(L.control.layers(null,bkgrdGrp,{collapsed:false,position:'topleft'}));
     });
 
 var foo;
@@ -291,8 +279,8 @@ var bkgrdGrp = {
 };
 
 mymap.addLayer(mcg);
-mymap.addControl(L.control.layers(null,imagedCtrlGrp,{collapsed:false}));
-mymap.addControl(L.control.layers(null,boroGrp,{collapsed:false}));
+mymap.addControl(L.control.layers(null,imagedCtrlGrp,{collapsed:false,position:'topleft'}));
+mymap.addControl(L.control.layers(null,boroGrp,{collapsed:false,position:'topleft'}));
 
 mymap.on({
     "overlayadd":updateThings,
@@ -301,4 +289,15 @@ mymap.on({
 });
 mcg.on("animationend",updateScale);
 
+var toolbar = L.control({position:'topright'});
+toolbar.onAdd = function(map){
+    var div = L.DomUtil.create("div","toolbar");
+    d3.select(div).selectAll('.race-selector').data(Object.keys(raceColor)).enter()
+	.append('div')
+	.attr("class",function(d,i){return "race-selector race-"+d;})
+	.style({background:function(d,i){return raceColor[d];}})
+	.text(function(d){return raceName[d];})
+    return div;
 
+};
+mymap.addControl(toolbar);
