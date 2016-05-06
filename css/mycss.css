@@ -12,7 +12,7 @@ html,body{
 
 .toolbar{ /* the actual right hand toolbar */
     background-color:#FFFFFF;
-    width: 15vw;
+    width: 19vw;
     height: 96vh;
 }
 .label{ /* all section labels */
@@ -89,11 +89,13 @@ html,body{
 .boro-options-label{ /* label 'Borough' */ }
 
 .boro-selector{ /* all borough selectors */
-    background:rgba(173,216,230,.7);
+    background:rgba(173,216,230,1);
+    color: white;
     padding-left:1vw;
 }
 .boro-selector.selected{ /* all borough selector selected*/
-    background:rgba(173,216,230,1);
+    background:rgba(173,216,230,.7);
+    color: black;
 }
 .boro-QUEENS{ /* Queens selector */ }
 .boro-BROOKLYN{ /* Queens selector */ }
@@ -107,12 +109,15 @@ html,body{
 
 .incR-selectors{
     align-items:center;
+    font-size: 14px;
 }
 .incR-selector{
-    background:#C5BCBC;
+    background:#9C9898;
+    color: white;
 }
 .incR-selector.selected{
-    background:#9C9898;
+    background:#C5BCBC;
+    color: black;
 }
 .incR-N{
     display:inline;
@@ -120,9 +125,9 @@ html,body{
 }
 .incR-I{
     display:inline;
-    padding-left:5px;
+    padding-left:10px;
 }
 .incR-R{
     display:inline;
-    padding-left:5px;
+    padding-left:10px;
 }
