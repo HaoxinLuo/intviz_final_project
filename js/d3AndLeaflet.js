@@ -336,7 +336,7 @@ var addIncRControls = function(bar){
     var sizeStates = {'T':'tract','C':'county'}
     var incRDiv = d3.select(bar).append("div").classed("incR-options",true)[0][0];
     d3.select(incRDiv).append("span").classed("incR-options-label label",true)
-	.text("Income and Majority Race");
+	.text("Income and Predominant Race");
     d3.select(incRDiv).append('div').classed("incR-selectors",true)
 	.selectAll(".incR-selector").data(Object.keys(incRStates)).enter()
 	.append('div')
