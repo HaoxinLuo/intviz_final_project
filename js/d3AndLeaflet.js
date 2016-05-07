@@ -298,6 +298,9 @@ toolbar.onAdd = function(map){
     addBoroControls(bar);
     d3.select(bar).append("hr").classed("section-bar",true);
     addIncRControls(bar);
+    d3.select(bar).append("hr").classed("section-bar",true);
+    //addLegend(bar);
+    
     L.DomEvent.disableClickPropagation(bar);
     L.DomEvent.disableScrollPropagation(bar);
     return bar
@@ -323,25 +326,69 @@ var addBoroControls = function(bar){
 	.append('div')
 	.attr('class',function(d,i){return 'boro-selector boro-'+d;})
 	.on("click",function(d,i){
-	    d3.select(this).classed("selected",!this.classList.contains("selected"))})
+	    d3.select(this).classed("selected",!this.classList.contains("selected"));})
 	.text(function(d){return boroName[d];})
 
 };
 
 var addIncRControls = function(bar){
     var incRStates = {'N':'None','I':'Income','R':'Largest Race'};
+    var sizeStates = {'T':'tract','C':'county'}
     var incRDiv = d3.select(bar).append("div").classed("incR-options",true)[0][0];
     d3.select(incRDiv).append("span").classed("incR-options-label label",true)
 	.text("Income and Majority Race");
     d3.select(incRDiv).append('div').classed("incR-selectors",true)
-	.selectAll(".boro-selector").data(Object.keys(incRStates)).enter()
+	.selectAll(".incR-selector").data(Object.keys(incRStates)).enter()
 	.append('div')
 	.attr('class',function(d,i){return 'incR-selector incR-'+d;})
 	.on("click",function(d,i){
-	    d3.select(this).classed("selected",!this.classList.contains("selected"))})
+	    d3.selectAll('.incR-selector').classed('selected',false);
+	    d3.select(this).classed("selected",true);
+	    removeLegend();
+	    if(this.classList.contains('incR-N'))
+		return;
+	    visInc = this.classList.contains('incR-R')?false:true;
+	    addLegend();
+	})
 	.text(function(d){return incRStates[d];});
 
+    d3.select(incRDiv).append('div').classed('apple-selectors',true)
+	.selectAll('.apple-selector').data(Object.keys(sizeStates)).enter()
+	.append('div')
+	.attr('class',function(d,i){return 'apple-selector apple-'+d;})
+	.on("click",function(d,i){
+	    d3.selectAll('.apple-selector').classed("selected",false);
+	    d3.select(this).classed("selected",true);
+	    if(this.classList.contains('apple-T')){
+		return;
+	    }
+	})
+	.text(function(d){return sizeStates[d];});
 };
 
+var addLegend = function(){
+    var legendDiv = d3.select('.toolbar').append("div").classed("legend-container",true)[0][0];
+    var data = visInc ? incColorScale.scale.range():raceColorScale.range();
+    var label = visInc ? "Income Legend":"Predominate Race Legend";
+    d3.select(legendDiv).append("span").classed("legend-label label",true).text(label);
+    d3.select(legendDiv)
+	.selectAll('.legend-rows').data(data).enter()
+	.append('div').attr('class',function(d,i){return 'legend-rows legend-row'+i;})
+	.each(function(d,i){
+	    d3.select(this).append('div').classed('legend-color',true)
+		.style({background:d});
+	    var domain = visInc?
+		incColorScale.scale.invertExtent(d):raceColorScale.invertExtent(i);
+	    var text = visInc?Math.round(domain[0])+' - '+Math.round(domain[1]):
+		domain;
+	    d3.select(this).append('div').classed('legend-text',true)
+		//.style({display:'inline-block',padding:'3px'})
+		.text(text);
+	});
+};
+
+var removeLegend = function(){
+    d3.selectAll(".legend-container").remove();
+}
 
 mymap.addControl(toolbar);

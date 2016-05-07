@@ -14,10 +14,16 @@ html,body{
     background-color:#FFFFFF;
     width: 15vw;
     height: 96vh;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
 }
 .label{ /* all section labels */
     font-size:16px;
+
 }
+
 
 /**************************************** RACE SECTION *****************************************/
 .race-options{ /* block of all race related stuff */ }
@@ -120,4 +126,42 @@ html,body{
 .incR-R{
     display:inline;
     padding-left:5px;
+}
+
+/*************************** County/Tract section *************************************/
+
+.apple-selectors{
+    align-items:center;
+}
+
+.apple-selectors.selected{
+    align-items:center;
+}
+
+.apple-T{
+    display:inline;
+    padding-left:5px;
+}
+.apple-C{
+    display:inline;
+    padding-left:5px;
+}
+
+
+/*************************** Legends ****************************************************/
+.legend-container{ /* div of all legend stuff */
+
+}
+.legend-rows{ /* all colored rows */
+    
+}
+.legend-row-0{ /* 0 to n row of legend */}
+.legend-color{ /* all rows' color square */
+    width:15px;
+    height:15px;
+    display:inline-block
+}
+.legend-text{ /* all rows' text block */
+    display:inline-block;
+    padding:3px;
 }
