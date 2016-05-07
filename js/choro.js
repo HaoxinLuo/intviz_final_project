@@ -1,22 +1,3 @@
-// var minZoom = 11,maxZoom = 17;
-// var latlngBounds = [[40.914550362677204,-73.65509033203126],
-//                     [40.498136668508536,-74.34173583984376]];
-// var mymap = L.map('mapid')
-//     .setView([40.73, -73.99], 11)
-//     .setMaxBounds(latlngBounds)
-//     .setMinZoom(minZoom)
-//     .setMaxZoom(maxZoom);
-// L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token='
-// 	    +'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ'
-// 	    +'._QA7i5Mpkd_m30IGElHziw', {
-//     maxZoom: maxZoom,
-//     minZoom: minZoom,
-//     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-//     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-//     'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-//     id: 'mapbox.light',
-//     bounds:latlngBounds
-// }).addTo(mymap);
 
 var tellMeWhatDo = function(feature,layer){
     incColorScale.calcDomain(feature);
@@ -67,8 +48,17 @@ var raceColorScale = {
 	    this.storage[feature._leaflet_id]=this.raceColor[dom.substr(dom.indexOf('_')+1,2)];
 	}
 	return this.storage[feature._leaflet_id];	    
-    }
-	
+    },
+    range:function(){
+	var ans = []
+	for(var r in this.raceColor)
+	    ans.push(this.raceColor[r]);
+	return ans;
+    },
+    invertExtent:function(i){
+	return ['Asian','Black','American Indian','Hispanic Origin','White',
+		'Mixed(Two or more races)','Other'][i];
+    }	
 }
 
 
