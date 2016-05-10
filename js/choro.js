@@ -8,6 +8,7 @@ var tellMeWhatDo = function(feature,layer){
 var incColorScale = {
     scale : d3.scale.quantize().range(
 	['#ffffff','#f0f0f0','#d9d9d9','#bdbdbd','#969696','#737373']),
+	//['#f2f0f7','#dadaeb','#bcbddc','#9e9ac8','#756bb1','#54278f']),
     county : [Number.MAX_VALUE,0],
     tract : [Number.MAX_VALUE,0],    
     calcDomain: function(feature){
@@ -73,13 +74,15 @@ var giveMeStyle = function(feature){
     };
 };
 
-var visInc = true;
+var visVar = {inc:true,county:true,
+	      BRONX:true,BROOKLYN:true,MANHATTAN:true,'STATEN IS':true,QUEENS:true,
+	     'A':false,'B':false,'I':false,'P':false,'Q':false,'W':false,'U':false,'Z':false};
 var getBkgrdColor = function(feature){
-    return visInc ? incColorScale.gColor(feature):raceColorScale.gColor(feature);
+    return visVar.inc ? incColorScale.gColor(feature):raceColorScale.gColor(feature);
 };
 
-var updateBkgrdColor = function(layerCtrlEvent){
-    var layers  = layerCtrlEvent.layer.getLayers();
+var updateBkgrdColor = function(){
+    var layers  = bkgrdGrp[visVar.county?'county':'tract'].getLayers();
     for(var i in layers){
 	layers[i].setStyle({color:getBkgrdColor(layers[i].feature)});
     }

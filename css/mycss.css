@@ -109,7 +109,7 @@ html,body{
 
 /************************** INCOME/RACE SECTION ******************************************/
 
-.incR-options{ /* block of all borough stuff */ }
+.incR-options{ /* block of all income and predominant race stuff */ }
 
 .incR-options-label{ /* label Income and Majority Race */ }
 
@@ -120,6 +120,10 @@ html,body{
 .incR-selector{
     background:#9C9898;
     color: white;
+    padding:2px;
+    border-style:solid;
+    border-width:1px;
+    border-color:#9C9898;
 }
 .incR-selector.selected{
     background:#C5BCBC;
@@ -128,33 +132,46 @@ html,body{
 .incR-N{
     display:inline;
     padding-left:5px;
+    padding-right:5px;
 }
 .incR-I{
     display:inline;
-    padding-left:10px;
+    padding-left:5px;
+    padding-right:5px;
 }
 .incR-R{
     display:inline;
-    padding-left:10px;
+    padding-left:5px;
+    padding-right:5px;
 }
 
 /*************************** County/Tract section *************************************/
 
 .apple-selectors{
     align-items:center;
+    font-size: 14px;
 }
 
-.apple-selectors.selected{
-    align-items:center;
+.apple-selector{
+    background:#9C9898;
+    color: white;
+    padding:2px;
+}
+
+.apple-selector.selected{
+    background:#C5BCBC;
+    color: black;
 }
 
 .apple-T{
     display:inline;
     padding-left:5px;
+    padding-right:5px;
 }
 .apple-C{
     display:inline;
     padding-left:5px;
+    padding-right:5px;
 }
 
 
