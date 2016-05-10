@@ -81,8 +81,8 @@ var myIconFxn = function(cluster){
 	valueFxn:function(d){return d.values.length;},
 	strokeWidth:strokeWidth,
 	outerR:r,
-	innerR:r-10,
-	sliceClass:function(d){return "race-"+raceName[d.data.key];},
+	innerR:20,
+	sliceClass:function(d){return "slice race-"+raceName[d.data.key];},
 	sliceTooltip:function(d){
 	    return d.data.values.length+' '+raceName[d.data.key];},
 	colorFxn:function(d){return raceColor[d.data.key]},
@@ -234,6 +234,7 @@ mymap.on({
     "moveend":updateScale
 });
 mcg.on("animationend",updateScale);
+
 
 /******************************** toolbar stuff **********************************************/
 var toolbar = L.control({position:'topright'});

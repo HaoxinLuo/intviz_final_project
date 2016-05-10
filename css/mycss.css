@@ -24,6 +24,10 @@ html,body{
 
 }
 
+path.incR-hover{
+    stroke-width:5px;
+    fill-opacity:0.6;
+}
 
 /**************************************** RACE SECTION *****************************************/
 .race-options{ /* block of all race related stuff */ }
@@ -186,7 +190,11 @@ html,body{
 .legend-color{ /* all rows' color square */
     width:15px;
     height:15px;
-    display:inline-block
+    display:inline-block;
+    border-style:solid;
+    border-width:1px;
+    border-color:black;
+    opacity:0.5;
 }
 .legend-text{ /* all rows' text block */
     display:inline-block;

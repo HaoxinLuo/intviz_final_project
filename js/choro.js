@@ -1,6 +1,17 @@
+var onHover = function(ev){
+    var layer = ev.target;
+    d3.select(layer.getElement()).classed("incR-hover",true);
+};
+
+var endHover = function(ev){
+    var layer = ev.target;
+    d3.select(layer.getElement()).classed("incR-hover",false);
+}
 
 var tellMeWhatDo = function(feature,layer){
     incColorScale.calcDomain(feature);
+    layer.on("mouseover",onHover);
+    layer.on("mouseout",endHover);
     // layer.bindPopup("<span>"+feature.properties.COUNTY+"</span>");
     // layer.on("click",function(){console.log(feature)});
 };
@@ -8,6 +19,7 @@ var tellMeWhatDo = function(feature,layer){
 var incColorScale = {
     scale : d3.scale.quantize().range(
 	['#ffffff','#f0f0f0','#d9d9d9','#bdbdbd','#969696','#737373']),
+	//['#d9d9d9','#bdbdbd','#969696','#737373','#525252','#252525']),
 	//['#f2f0f7','#dadaeb','#bcbddc','#9e9ac8','#756bb1','#54278f']),
     county : [Number.MAX_VALUE,0],
     tract : [Number.MAX_VALUE,0],    
@@ -67,6 +79,7 @@ var giveMeStyle = function(feature){
     return {
 	stroke:true, //draw borders
 	color:getBkgrdColor(feature), //gets color for layer in income/race
+	fillColor:getBkgrdColor(feature), //gets color for layer in income/race
 	weight:0.5, //border width(px)
 	opacity:1.0, //border opacity
 	fillOpacity:.5,//fill opacity
@@ -77,6 +90,7 @@ var giveMeStyle = function(feature){
 var visVar = {inc:true,county:true,
 	      BRONX:true,BROOKLYN:true,MANHATTAN:true,'STATEN IS':true,QUEENS:true,
 	     'A':false,'B':false,'I':false,'P':false,'Q':false,'W':false,'U':false,'Z':false};
+
 var getBkgrdColor = function(feature){
     return visVar.inc ? incColorScale.gColor(feature):raceColorScale.gColor(feature);
 };
