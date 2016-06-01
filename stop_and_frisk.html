@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NYC Stop and Frisk Data</title>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" 
+	href="http://cdn.leafletjs.com/leaflet/v1.0.0-rc.1/leaflet.css" />
+  <link rel="stylesheet" type="text/css" href="css/mycss.css"/>
+  <script src="http://cdn.leafletjs.com/leaflet/v1.0.0-rc.1/leaflet.js" defer>
+  </script>
+  <script src="https://cdn.rawgit.com/ghybs/Leaflet.FeatureGroup.SubGroup/v1.0.0/dist/leaflet.featuregroup.subgroup-src.js" defer></script>
+  <script src="js/leaflet.markercluster-src.js" defer></script>
+  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8" defer>
+  </script>
+  <script src="https://d3js.org/d3-queue.v2.min.js"></script>
+
+</head>
+<body>
+  <div id="mapid"></div>
+  <!--In our visualization, every pie chart represents the number of stops in that location, with the pie chars broken up by race.  As you zoom, the pie charts divide into smaller, more precise pie charts.-->
+  <script src="js/choro.js" defer></script>
+  <script src="js/d3AndLeaflet.js" defer></script>    
+</body>
+</html>
