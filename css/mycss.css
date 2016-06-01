@@ -1,0 +1,202 @@
+html,body{
+    height:100%;
+    margin:0;
+}
+
+#mapid{
+    position:relative;
+    height:100%;
+    width:100%;
+    padding:0px;
+}
+
+.toolbar{ /* the actual right hand toolbar */
+    background-color:#FFFFFF;
+    width: 19vw;
+    height: 96vh;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+}
+.label{ /* all section labels */
+    font-size:16px;
+
+}
+
+path.incR-hover{
+    stroke-width:5px;
+    fill-opacity:0.6;
+}
+
+/**************************************** RACE SECTION *****************************************/
+.race-options{ /* block of all race related stuff */ }
+
+.race-options-label{ /* label 'Race' for the block */ }
+
+.race-selector{ /* selection div of every race */
+    font-size: 13px;
+    padding-left: 1vw;
+    color: white;
+}
+
+.race-selector.selected{
+    color: black;
+}
+
+.race-A{ /* div of asian */
+    background:rgba(62,121,104,1);
+}
+.race-B{ /* div of black */
+    background:rgba(143,105,77,1);
+}
+.race-I{ /* div of american indian */
+    background:rgba(132,130,162,1);
+}
+.race-P{ /* div of black-hispanic */
+    background:rgba(160,110,136,1);
+}
+.race-Q{ /* div of white-hispanic */
+    background:rgba(99,129,65,1);
+}
+.race-W{ /* div of white */
+    background:rgba(168,141,62,1);
+}
+.race-U{ /* div of unknown */
+    background:rgba(137,109,57,1);
+}
+.race-Z{ /* div of other */
+    background:rgba(153,153,153,1);
+}
+.race-A.selected{ /* div of asian */
+    background:rgba(27,158,119,.9);
+}
+.race-B.selected{ /* div of black */
+    background:rgba(217,95,2,.9);
+}
+.race-I.selected{ /* div of american indian */
+    background:rgba(117,112,179,.8);
+}
+.race-P.selected{ /* div of black-hispanic */
+    background:rgba(231,41,138,.9);
+}
+.race-Q.selected{ /* div of white-hispanic */
+    background:rgba(102,166,30,.9);
+}
+.race-W.selected{ /* div of white */
+    background:rgba(230,171,0,.9);
+}
+.race-U.selected{ /* div of unknown */
+    background:rgba(166,118,29,.8);
+}
+.race-Z.selected{ /* div of other */
+    background:rgba(102,102,102,.8);
+}
+/*************************** BOROUGH SECTION *********************************************/
+
+.boro-options{ /* block of all borough stuff */ }
+
+.boro-options-label{ /* label 'Borough' */ }
+
+.boro-selector{ /* all borough selectors */
+    background:rgba(173,216,230,1);
+    color: white;
+    padding-left:1vw;
+}
+.boro-selector.selected{ /* all borough selector selected*/
+    background:rgba(173,216,230,.7);
+    color: black;
+}
+.boro-QUEENS{ /* Queens selector */ }
+.boro-BROOKLYN{ /* Queens selector */ }
+/* etc */
+
+/************************** INCOME/RACE SECTION ******************************************/
+
+.incR-options{ /* block of all income and predominant race stuff */ }
+
+.incR-options-label{ /* label Income and Majority Race */ }
+
+.incR-selectors{
+    align-items:center;
+    font-size: 14px;
+}
+.incR-selector{
+    background:#9C9898;
+    color: white;
+    padding:2px;
+    border-style:solid;
+    border-width:1px;
+    border-color:#9C9898;
+}
+.incR-selector.selected{
+    background:#C5BCBC;
+    color: black;
+}
+.incR-N{
+    display:inline;
+    padding-left:5px;
+    padding-right:5px;
+}
+.incR-I{
+    display:inline;
+    padding-left:5px;
+    padding-right:5px;
+}
+.incR-R{
+    display:inline;
+    padding-left:5px;
+    padding-right:5px;
+}
+
+/*************************** County/Tract section *************************************/
+
+.apple-selectors{
+    align-items:center;
+    font-size: 14px;
+}
+
+.apple-selector{
+    background:#9C9898;
+    color: white;
+    padding:2px;
+}
+
+.apple-selector.selected{
+    background:#C5BCBC;
+    color: black;
+}
+
+.apple-T{
+    display:inline;
+    padding-left:5px;
+    padding-right:5px;
+}
+.apple-C{
+    display:inline;
+    padding-left:5px;
+    padding-right:5px;
+}
+
+
+/*************************** Legends ****************************************************/
+.legend-container{ /* div of all legend stuff */
+
+}
+.legend-rows{ /* all colored rows */
+    
+}
+.legend-row-0{ /* 0 to n row of legend */}
+.legend-color{ /* all rows' color square */
+    width:15px;
+    height:15px;
+    display:inline-block;
+    border-style:solid;
+    border-width:1px;
+    border-color:black;
+    opacity:0.5;
+}
+.legend-text{ /* all rows' text block */
+    display:inline-block;
+    padding:3px;
+}
